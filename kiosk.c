@@ -693,8 +693,7 @@ void processRefund() {
     // 환불 처리 후 환불 내역을 파일에 저장합니다.
     saveRefundsToFile();
 
-    // 주문 내역 확인 화면을 다시 출력합니다.
-    printOrderSummary();
+ 
 
     // 환불 내역 출력
     printRefundHistory();
@@ -746,10 +745,8 @@ void loadOrdersFromFile() {
         return;
     }
 
-    orderCount = 0; // 기존 주문 내역 초기화
-
     while (fscanf(file, "%d %s %d %d %s", &orders[orderCount].item.id, orders[orderCount].item.name,
-        &orders[orderCount].quantity, &orders[orderCount].paymentMethod, orders[orderCount].cardNumber) != EOF) {
+        &orders[orderCount].quantity, &orders[orderCount].paymentMethod, orders[orderCount].cardNumber) == 5) {
         orderCount++;
     }
 
@@ -769,16 +766,23 @@ void printRefundHistory() {
         printf("┃");
     }
     printf("\033[0;36m");
-    GotoXY(50, 10);
-    printf("환불 내역:\n");
+    GotoXY(50, 12);
+    printf("%-20s %-10s\n", "음식명", "환불 금액(원)");
+    GotoXY(28, 13);
+    printf("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n");
 
     for (int i = 0; i < refundCount; i++) {
+        printf("\033[0;36m");
+        GotoXY(50, 14);
         struct Refund refund = refunds[i];
-        GotoXY(50, 12 + i);
-        printf("%d. %s x %d - %d원 환불\n", i + 1, refund.order.item.name, refund.order.quantity, refund.refundAmount);
+        printf("%-20s %-10d\n", refund.order.item.name, refund.refundAmount);
     }
-
-    printf("\n\n");
+    GotoXY(28, 16);
+    printf("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n");
+    GotoXY(50, 19);
+    printf("아무 키나 누르면 돌아갑니다...\n");
+    getchar(); // 사용자가 아무 키나 누를 때까지 대기
+    getchar(); // Enter 키 입력을 처리
 }
 
 void saveRefundsToFile() {
