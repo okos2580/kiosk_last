@@ -159,14 +159,17 @@ void manageMenu() {
         switch (choice) {
         case 1:
             // 메뉴 추가
-            printf("\n새로운 메뉴를 추가합니다.\n");
+            printf("\033[0;36m");
+            GotoXY(51, 26);
+            printf("새로운 메뉴를 추가합니다.");
             printf("메뉴 ID: ");
             scanf("%d", &id);
 
             int found = 0; // 메뉴 ID 중복 확인을 위한 변수
             for (i = 0; i < sizeof(menu) / sizeof(menu[0]); i++) {
                 if (menu[i].id == id) {
-                    printf("이미 존재하는 메뉴 ID입니다. 다른 ID를 선택하세요.\n");
+                    GotoXY(51, 28);
+                    printf("이미 존재하는 메뉴 ID입니다. 다른 ID를 선택하세요.");
                     found = 1; // 메뉴 ID가 이미 존재함을 표시
                     break;
                 }
@@ -197,15 +200,20 @@ void manageMenu() {
 
         case 2:
             // 메뉴 수정
-            printf("\n메뉴를 수정합니다.\n");
+            printf("\033[0;36m");
+            GotoXY(51, 26);
+            printf("메뉴를 수정합니다.");
+
             printf("수정할 메뉴 ID: ");
             scanf("%d", &id);
 
 
             for (i = 0; i < sizeof(menu) / sizeof(menu[0]); i++) {
                 if (menu[i].id == id) {
+                    GotoXY(33, 30);
                     printf("새로운 메뉴 이름: ");
                     scanf(" %49[^\n]", name);
+                    GotoXY(60, 30);
                     printf("새로운 메뉴 가격: ");
                     scanf("%f", &price);
 
@@ -213,6 +221,7 @@ void manageMenu() {
                     strcpy(menu[i].name, name);
                     menu[i].price = price;
                     saveMenuToFile();
+                    GotoXY(51, 32);
                     printf("메뉴가 수정되었습니다.\n");
                     found = 1; // 메뉴를 찾았음을 표시
                     break;
@@ -228,7 +237,9 @@ void manageMenu() {
 
         case 3:
             // 메뉴 삭제
-            printf("\n메뉴를 삭제합니다.\n");
+            printf("\033[0;36m");
+            GotoXY(51, 26);
+            printf("메뉴를 삭제합니다.");
             printf("삭제할 메뉴 ID: ");
             scanf("%d", &id);
 
@@ -253,7 +264,7 @@ void manageMenu() {
             printf("올바른 옵션을 선택하세요.\n");
             break;
         }
-
+        GotoXY(51, 28);
         printf("아무 키나 누르면 돌아갑니다...\n");
         getchar(); // 사용자가 아무 키나 누를 때까지 대기
         getchar(); // Enter 키 입력을 처리
